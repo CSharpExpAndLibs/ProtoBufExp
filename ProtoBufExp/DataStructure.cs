@@ -7,10 +7,24 @@ using ProtoBuf;
 
 namespace ProtoBufExp
 {
-    struct FixedBuffer
-    { {}
+    [ProtoContract]
+    unsafe struct FixedBuffer
+    {
+        [ProtoMember(1)]
+        public fixed int buffer[10];
+    }
+
     [ProtoContract]
     class DataStructure
     {
+        [ProtoMember(1)]
+        public int num;
+
+        [ProtoMember(2)]
+        public string name;
+
+        [ProtoMember(3)]
+        public int[] buffer;
+
     }
 }
