@@ -8,6 +8,12 @@ using ProtoBuf;
 
 namespace ProtoBufExp
 {
+    class ParentBuffer
+    {
+        public string name { get; set; }
+        public byte[] param;
+    }
+
     class Program
     {
         static void Main(string[] args)
@@ -22,19 +28,32 @@ namespace ProtoBufExp
                 dataStructure.buffer[i] = i;
             }
 
+            Console.WriteLine("--- Original: -----");
             Console.WriteLine("--- num={0} ---", dataStructure.num);
             Console.WriteLine("--- name={0} ---", dataStructure.name);
+            for (int i = 0; i < dataStructure.buffer.Length; i++)
+            {
+                Console.WriteLine("--- buffer[{0}] = {1} ---", i, dataStructure.buffer[i]);
+            }
+            Console.WriteLine();
+            Console.WriteLine();
 
             // Serialize into dataStream
             MemoryStream dataStream = new MemoryStream();
             Serializer.Serialize(dataStream, dataStructure);
             dataStream.Seek(0, SeekOrigin.Begin);
 
+            // Parent classのデータとして組み込む
+            ParentBuffer p = new ParentBuffer();
+            p.name = "Example";
+            p.param = dataStream.ToArray();
+
+
             // Desirialize from stream into d2
             DataStructure d2;
-            d2 = Serializer.Deserialize<DataStructure>(dataStream);
-            
+            d2 = Serializer.Deserialize<DataStructure>(new MemoryStream(p.param));
 
+            Console.WriteLine("--- After Conversion: -----");
             Console.WriteLine("--- num={0} ---", d2.num);
             Console.WriteLine("--- name={0} ---", d2.name);
             for (int i = 0; i < d2.buffer.Length; i++)
