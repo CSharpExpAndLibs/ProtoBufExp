@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using System.Runtime.InteropServices;
 using ProtoBuf;
 
 namespace ProtoBufExp
@@ -16,6 +17,9 @@ namespace ProtoBufExp
 
     class Program
     {
+        [DllImport("PointarAccessSample.dll", CallingConvention = CallingConvention.Cdecl)]
+        unsafe extern public static void ConvertContents(int size, int* data);
+
         static void Main(string[] args)
         {
             DataStructure dataStructure = new DataStructure();
@@ -37,6 +41,15 @@ namespace ProtoBufExp
             }
             Console.WriteLine();
             Console.WriteLine();
+
+            // dllのextern関数を呼び出す
+            unsafe
+            {
+                fixed(int* ptr = &dataStructure.buffer[0])
+                {
+                    ConvertContents(dataStructure.buffer.Length, ptr);
+                }
+            }
 
             // Serialize into dataStream
             MemoryStream dataStream = new MemoryStream();
