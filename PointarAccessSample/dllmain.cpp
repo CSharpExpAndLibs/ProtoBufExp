@@ -1,6 +1,6 @@
 ﻿// dllmain.cpp : DLL アプリケーションのエントリ ポイントを定義します。
-#ifndef _LINUX_BUILD_
 #include "pch.h"
+#ifndef _LINUX_BUILD_
 #include "PointarAccessSample.h"
 #include "stdio.h"
 
