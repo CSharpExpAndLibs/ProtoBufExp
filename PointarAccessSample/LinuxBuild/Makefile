@@ -16,8 +16,8 @@ LDFLAGS :=
 
 #---------------------------------------------------------------------#
 SO_BASE := libPointarAccessSample.so
-SO_MAJOR := .0
-SO_MINOR := .1
+#SO_MAJOR := .0
+#SO_MINOR := .1
 SO_NAME := $(SO_BASE)$(SO_MAJOR)
 TARGET := $(SO_NAME)$(SO_MINOR)
 
