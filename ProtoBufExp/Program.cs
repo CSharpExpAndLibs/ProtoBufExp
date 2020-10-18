@@ -17,7 +17,7 @@ namespace ProtoBufExp
 
     class Program
     {
-        [DllImport("PointarAccessSample.dll", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport("PointarAccessSample", CallingConvention = CallingConvention.Cdecl)]
         unsafe extern public static void ConvertContents(int size, int* data);
 
         static void Main(string[] args)
