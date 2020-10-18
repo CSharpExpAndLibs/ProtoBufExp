@@ -1,4 +1,5 @@
 ﻿// dllmain.cpp : DLL アプリケーションのエントリ ポイントを定義します。
+#ifndef _LINUX_BUILD_
 #include "pch.h"
 #include "PointarAccessSample.h"
 #include "stdio.h"
@@ -18,6 +19,12 @@ BOOL APIENTRY DllMain( HMODULE hModule,
     }
     return TRUE;
 }
+#else
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include "PointarAccessSample.h"
+#endif // _LINUX_BUILD_
 
 void Dummy(int size)
 {

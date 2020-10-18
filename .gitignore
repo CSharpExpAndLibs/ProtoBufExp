@@ -338,3 +338,8 @@ ASALocalRun/
 
 # BeatPulse healthcheck temp database
 healthchecksdb
+
+# For Linux Environment
+*~
+*.[oa]
+*.so*
