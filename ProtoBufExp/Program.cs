@@ -22,35 +22,38 @@ namespace ProtoBufExp
 
         static void Main(string[] args)
         {
-            DataStructure dataStructure = new DataStructure();
-
-            dataStructure.num = 10;
-            dataStructure.name = "FREAD";
-            dataStructure.buffer = new int[10];
-            for (int i = 0; i < dataStructure.buffer.Length; i++)
+            DataStructure dataStructure = new DataStructure()
             {
-                dataStructure.buffer[i] = i;
-            }
+                Id = "Special Session!",
+                Buffer = new BufferBase[]
+                {
+                    new BufferBase()
+                    {
+                        Name = "一号",
+                        Data = new int[]
+                        {
+                            100,
+                            200,
+                        },
+                    },
+                    new BufferBase()
+                    {
+                        Name = "二号",
+                        Data = new int[]
+                        {
+                            -4,
+                            -500,
+                        },
+                    },
+                },
+            };
 
             Console.WriteLine("--- Original: -----");
-            Console.WriteLine("--- num={0} ---", dataStructure.num);
-            Console.WriteLine("--- name={0} ---", dataStructure.name);
-            for (int i = 0; i < dataStructure.buffer.Length; i++)
-            {
-                Console.WriteLine("--- buffer[{0}] = {1} ---", i, dataStructure.buffer[i]);
-            }
-            Console.WriteLine();
-            Console.WriteLine();
+            DispDataStructure(dataStructure);
 
-            // dllのextern関数を呼び出す
-            unsafe
-            {
-                fixed(int* ptr = &dataStructure.buffer[0])
-                {
-                    ConvertContents(dataStructure.buffer.Length, ptr);
-                }
-            }
-
+            // データ構造に多次元かjagged構成の、配列・リスト・辞書・マップ
+            // が含まれていると"UnsupportedException"が発生する。
+            // 構成はシンプルな一次元でないとだめらしい。
             // Serialize into dataStream
             MemoryStream dataStream = new MemoryStream();
             Serializer.Serialize(dataStream, dataStructure);
@@ -67,15 +70,25 @@ namespace ProtoBufExp
             d2 = Serializer.Deserialize<DataStructure>(new MemoryStream(p.param));
 
             Console.WriteLine("--- After Conversion: -----");
-            Console.WriteLine("--- num={0} ---", d2.num);
-            Console.WriteLine("--- name={0} ---", d2.name);
-            for (int i = 0; i < d2.buffer.Length; i++)
-            {
-                Console.WriteLine("--- buffer[{0}] = {1} ---", i, d2.buffer[i]);
-            }
+            DispDataStructure(d2);
 
             Console.ReadLine();
             
+        }
+        static void DispDataStructure(DataStructure d)
+        {
+            Console.WriteLine($"Id = {d.Id}");
+            int idx = 0;
+            foreach (var buf in d.Buffer)
+            {
+                Console.WriteLine($"Buffer[{idx}].Name = {buf.Name}");
+                for (int i = 0; i < buf.Data.Length; i++)
+                {
+                    Console.WriteLine($"Data[{i}]={buf.Data[i]}");
+                }
+                idx++;
+            }
+
         }
     }
 }

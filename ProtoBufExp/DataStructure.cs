@@ -8,23 +8,22 @@ using ProtoBuf;
 namespace ProtoBufExp
 {
     [ProtoContract]
-    unsafe struct FixedBuffer
+    class BufferBase
     {
         [ProtoMember(1)]
-        public fixed int buffer[10];
+        public string Name { get; set; }
+
+        [ProtoMember(2)]
+        public int[] Data { get; set; }
     }
 
     [ProtoContract]
     class DataStructure
     {
         [ProtoMember(1)]
-        public int num;
+        public string Id { get; set; }
 
         [ProtoMember(2)]
-        public string name;
-
-        [ProtoMember(3)]
-        public int[] buffer;
-
+        public BufferBase[] Buffer { get; set; }
     }
 }
