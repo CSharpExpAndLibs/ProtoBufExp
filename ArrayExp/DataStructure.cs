@@ -7,6 +7,11 @@ using ProtoBuf;
 
 namespace ArrayExp
 {
+    /// <summary>
+    /// IntArry,BoolArrey -> 初期化子あり
+    /// IntArry3,BoolArrey3 -> コンストラクタでの初期化あり
+    /// IntArry2,BoolArrey2 -> 初期化なし
+    /// </summary>
     [ProtoContract]
     class DataStructure
     {
@@ -31,6 +36,12 @@ namespace ArrayExp
         [ProtoMember(7)]
         public bool[] BoolArray3 { get; set; }
 
+        [ProtoMember(8)]
+        public int[] IntArray4 { get; set; } = null;
+
+        [ProtoMember(9)]
+        public bool[] BoolArray4 { get; set; } = null;
+
         public DataStructure()
         {
             IntArray3 = new int[] { 2, 3 };
@@ -46,6 +57,8 @@ namespace ArrayExp
             Console.WriteLine($"Length of BoolArray2={BoolArray2.Length}");
             Console.WriteLine($"Length of IntArray3={IntArray3.Length}");
             Console.WriteLine($"Length of BoolArray3={BoolArray3.Length}");
+            //Console.WriteLine($"Length of IntArray4={IntArray4.Length}");
+            //Console.WriteLine($"Length of BoolArray4={BoolArray4.Length}");
 
             int idx = 0;
             Console.Write("IntArray:");
@@ -100,6 +113,26 @@ namespace ArrayExp
                 idx++;
             }
             Console.WriteLine();
+
+#if false
+            idx = 0;
+            Console.Write("IntArray4:");
+            foreach (int i in IntArray4)
+            {
+                Console.Write($"[{idx}]={i},");
+                idx++;
+            }
+            Console.WriteLine();
+
+            idx = 0;
+            Console.Write("BoolArray4:");
+            foreach (bool b in BoolArray4)
+            {
+                Console.Write($"[{idx}]={b},");
+                idx++;
+            }
+            Console.WriteLine();
+#endif
 
         }
     }

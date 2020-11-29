@@ -23,12 +23,36 @@ namespace ArrayExp
 
             // 処理を繰り返すたびに配列の長さが増大する?
             //   --> 配列のプロパティに初期化子を与えると、Desirializeするたびに
-            //       再現されたデータの後ろに新たに初期化されたデータが付加される
-            //       ように見える。コンストラクタで初期化した場合も同じ振る舞い。
+            //       再現されたデータの前に、新たに初期化されたデータが付加される。
+            //       コンストラクタで初期化した場合も同じ振る舞い。
+            //       配列をProtoMemberに加える場合は、初期化子を与えてはいけない。
             DataStructure din = d;
             DataStructure dout;
             for (int cnt = 0; cnt < 3; cnt++)
             {
+                // 再初期化（？）によって設定した値が何処に配置されるのかを
+                // 確認する
+                din.BoolArray[0] = din.BoolArray[1] = false;
+                din.IntArray[0] = 10 * (cnt + 1);
+                din.IntArray[1] = -din.IntArray[0];
+
+                din.BoolArray3 = new bool[] { false, false };
+                din.IntArray3 = new int[] { 100, -100 };
+
+                if (cnt%2 == 0)
+                {
+                    din.BoolArray4 = new bool[] { true, true };
+                    din.IntArray4 = new int[] { 100, 200 };
+                }
+                else
+                {
+                    din.BoolArray4 = new bool[] { false, false };
+                    din.IntArray4 = new int[] { -100, -200 };
+                }
+                
+
+                din.len = 100 * (cnt + 1);
+
                 // Serialize
                 MemoryStream mstream = new MemoryStream();
                 Serializer.Serialize<DataStructure>(mstream, din);
